@@ -1,5 +1,4 @@
 require "sudoku_tools/version"
-
-module SudokuTools
-  # Your code goes here...
-end
+require "sudoku_tools/solve_sudoku"
+require "sudoku_tools/grid"
+require "sudoku_tools/print_grid"
