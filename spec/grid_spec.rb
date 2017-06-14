@@ -40,6 +40,11 @@ describe SudokuTools::Grid do
     expect(SudokuTools::Grid.new(easy_grid).boxes).to eq(boxes)
   end
 
+  it 'has candidates' do
+    g = SudokuTools::Grid.new(easy_grid)
+    expect(g.candidates).to eq easy_grid_candidates
+  end
+
   it 'can translate a row and column to grid index' do
     g = SudokuTools::Grid.new(easy_grid)
     expecte(g.translate(0,0)).to eq 0

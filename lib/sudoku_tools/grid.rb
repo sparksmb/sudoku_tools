@@ -4,8 +4,7 @@ class SudokuTools::Grid
     @rows = parse_rows
     @columns = parse_columns
     @boxes = parse_boxes
-    @candidates = initialize_candidates
-    prune_candidates
+    initialize_candidates
   end
 
   def serialized
@@ -24,34 +23,44 @@ class SudokuTools::Grid
     @boxes
   end
 
+  def candidates
+    @candidates
+  end
+
   def translate(row, col)
     (row * 9) + col
   end
 
-  def add_candidate(row, col, val)
+  def mark_candidate(row, col, val)
   end
 
-  def remove_candidate(row, col, val)
+  def erase_candidate(row, col, val)
   end
 
-  def mark_cell(row, col, val)
+  def mark_digit(row, col, val)
     index = translate(row, col)
     @grid[index] = val
   end
 
-  def clear_cell(row, col, val)
+  def erase_digit(row, col, val)
     index = translate(row, col)
     @grid[index] = "0"
+  end
+
+  def prune_candidates(row=nil, col=nil)
+    if row.nil? and col.nil?
+      (0..8).each do |row|
+        
+      end
+    end
   end
 
   private
 
   def initialize_candidates
-
-  end
-
-  def prune_candidates
-
+    path = 'spec/fixtures/candidates.json'
+    ap @candidates = JSON.parse(File.open(path).read)
+    prune_candidates
   end
 
   def parse_rows
