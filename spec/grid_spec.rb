@@ -40,14 +40,25 @@ describe SudokuTools::Grid do
     expect(SudokuTools::Grid.new(easy_grid).boxes).to eq(boxes)
   end
 
+  it 'converts grid index to grid coordinate' do
+    g = SudokuTools::Grid.new(easy_grid)
+    expect(g.index_to_coordinate(0)).to eq ({ row: 0, column: 0 })
+    expect(g.index_to_coordinate(28)).to eq ({ row: 3, column: 1 })
+    expect(g.index_to_coordinate(40)).to eq ({ row: 4, column: 4 })
+    expect(g.index_to_coordinate(69)).to eq ({ row: 7, column: 6 })
+    expect(g.index_to_coordinate(80)).to eq ({ row: 8, column: 8 })
+  end
+
   it 'has candidates' do
     g = SudokuTools::Grid.new(easy_grid)
-    expect(g.candidates).to eq easy_grid_candidates
+    ap g.serialized
+    ap candidates = g.candidates
+    expect(candidates).to eq easy_grid_candidates
   end
 
   it 'can translate a row and column to grid index' do
     g = SudokuTools::Grid.new(easy_grid)
-    expecte(g.translate(0,0)).to eq 0
-    expecte(g.translate(8,8)).to eq 80
+    expect(g.coordinate_to_index(0,0)).to eq 0
+    expect(g.coordinate_to_index(8,8)).to eq 80
   end
 end

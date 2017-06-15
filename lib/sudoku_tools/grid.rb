@@ -27,32 +27,13 @@ class SudokuTools::Grid
     @candidates
   end
 
-  def translate(row, col)
-    (row * 9) + col
+  def index_to_coordinate(index)
+    row = index / 9
+    { row: row, column: index - (row * 9) }
   end
 
-  def mark_candidate(row, col, val)
-  end
-
-  def erase_candidate(row, col, val)
-  end
-
-  def mark_digit(row, col, val)
-    index = translate(row, col)
-    @grid[index] = val
-  end
-
-  def erase_digit(row, col, val)
-    index = translate(row, col)
-    @grid[index] = "0"
-  end
-
-  def prune_candidates(row=nil, col=nil)
-    if row.nil? and col.nil?
-      (0..8).each do |row|
-        
-      end
-    end
+  def coordinate_to_index(row, column)
+    row * 9 + column
   end
 
   private
@@ -60,7 +41,24 @@ class SudokuTools::Grid
   def initialize_candidates
     path = 'spec/fixtures/candidates.json'
     ap @candidates = JSON.parse(File.open(path).read)
-    prune_candidates
+    prune_candidates_where_digit
+    prune_candidates_from_rows
+    prune_candidates_from_columns
+  end
+
+  def prune_candidates_from_rows
+  end
+
+  def prune_candidates_from_columns
+  end
+
+  def prune_candidates_where_digit
+    @grid.split("").each_with_index do |char, index|
+      if char != "0"
+        coordinate = index_to_coordinate(index)
+        @candidates[coordinate[:row]][coordinate[:column]] = ""
+      end
+    end
   end
 
   def parse_rows
