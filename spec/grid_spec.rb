@@ -1,27 +1,23 @@
 require 'spec_helper'
 
 describe SudokuTools::Grid do
-  it 'converts grid index to grid coordinate' do
-    g = SudokuTools::Grid.new(easy_grid)
-    expect(g.index_to_coordinate(0)).to eq ({ row: 0, column: 0 })
-    expect(g.index_to_coordinate(28)).to eq ({ row: 3, column: 1 })
-    expect(g.index_to_coordinate(40)).to eq ({ row: 4, column: 4 })
-    expect(g.index_to_coordinate(69)).to eq ({ row: 7, column: 6 })
-    expect(g.index_to_coordinate(80)).to eq ({ row: 8, column: 8 })
-  end
-
-  it 'can convert a grid coordinate to index' do
-    g = SudokuTools::Grid.new(easy_grid)
-    expect(g.coordinate_to_index(0,0)).to eq 0
-    expect(g.coordinate_to_index(8,8)).to eq 80
+  before(:each) do
+    @grid = SudokuTools::Grid.new(easy_grid)
   end
 
   it 'has pruned candidates' do
-    g = SudokuTools::Grid.new(easy_grid)
-    #ap g.serialized
-    g.prune_candidates_where_digit
-    #ap g.candidates
-    expect(g.candidates).to eq easy_grid_candidates_pruned_by_digit
-    expect(g.candidates).to eq easy_grid_candidates
+    @grid.prune_candidates_where_digit
+    expect(@grid.candidates).to eq easy_grid_candidates_pruned_by_digit
+    #expect(@grid.candidates).to eq easy_grid_candidates
+  end
+
+  it 'should prune a row' do
+    ap @grid.serialized
+    ap @grid.candidates.first(9)
+    @grid.prune_row(0)
+    ap @grid.candidates.first(9)
+    #ap @grid.candidates.first.tr('1', '')
+    #ap @grid.candidates.first
+    #expect(@grid.candidates.first[0]).to eq ("12345678")
   end
 end
