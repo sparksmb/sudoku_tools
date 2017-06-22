@@ -1,6 +1,7 @@
-#include SudokuTools::GridIndexCoordinateConversion
+require_relative 'grid_index_coordinate_conversion'
 
 class SudokuTools::Grid
+  include SudokuTools::GridIndexCoordinateConversion
 
   def initialize(serialized_grid)
     @grid = serialized_grid
