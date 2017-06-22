@@ -43,4 +43,8 @@ describe SudokuTools::GridIndexCoordinateConversion do
     expect(coordinate_to_index(4,1)).to eq 37
     expect(coordinate_to_index(8,8)).to eq 80
   end
+
+  it 'can get an array of box indicies' do
+    expect(box_indicies(4)).to eq ([30,31,32,39,40,41,48,49,50])
+  end
 end

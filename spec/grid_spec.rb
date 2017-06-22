@@ -23,26 +23,39 @@ describe SudokuTools::Grid do
     expect(@grid.candidates[59]).to eq ("589")
   end
 
-  it 'should prune all rows' do
-    @grid.prune_candidates_from_rows
-    ap @grid.candidates
-  end
-
-  it 'should return a column of digits' do
+  it 'should return grid column digits' do
     expect(@grid.column(0)).to eq "010532498"
     expect(@grid.column(5)).to eq "079316000"
   end
 
   it 'should prune a column' do
+    @grid.prune_digits
     @grid.prune_column(0)
-    expect(@grid.candidates[0]).to eq ("67")
-    expect(@grid.candidates[1]).to eq ("")
-    expect(@grid.candidates[2]).to eq ("67")
+    #[0,9,18,27,36,45,54,63,72].each {|ci| ap @grid.candidates[ci] }
+    [9,27,36,45,54,63,72].each {|ci| expect(@grid.candidates[ci]).to eq "" }
+    [0,18].each {|ci| expect(@grid.candidates[ci]).to eq "67" }
+
+    @grid.prune_column(5)
+    #[5,14,23,32,41,50,59,68,77].each {|ci| ap @grid.candidates[ci] }
+    [14,23,32,41,50].each {|ci| expect(@grid.candidates[ci]).to eq "" }
+    [5,59,68,77].each {|ci| expect(@grid.candidates[ci]).to eq "2458" }
   end
 
-  it 'has pruned candidates' do
-    @grid.prune_candidates_where_digit
-    expect(@grid.candidates).to eq easy_grid_candidates_pruned_by_digit
+  it 'should return grid box digits' do
+    expect(@grid.box(0)).to eq "090102030"
+    expect(@grid.box(4)).to eq "723491856"
+    expect(@grid.box(8)).to eq "030401020"
+  end
+
+  it 'should prune a box' do
+    @grid.prune_digits
+    @grid.prune_box(0)
+    [0,2,10,18,20].each {|ci| expect(@grid.candidates[ci]).to eq "45678" }
+    [1,9,11,19].each {|ci| expect(@grid.candidates[ci]).to eq "" }
+  end
+
+  it 'should prune candidates' do
+    @grid.initialize_candidates
     expect(@grid.candidates).to eq easy_grid_candidates
   end
 end

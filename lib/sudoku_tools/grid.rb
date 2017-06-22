@@ -5,7 +5,8 @@ class SudokuTools::Grid
 
   def initialize(serialized_grid)
     @grid = serialized_grid
-    initialize_candidates
+    path = 'spec/fixtures/candidates.json'
+    @candidates = JSON.parse(File.open(path).read)
   end
 
   def serialized
@@ -16,8 +17,8 @@ class SudokuTools::Grid
     @candidates
   end
 
-  def row(n)
-    i = row_to_index(n)
+  def row(r)
+    i = row_to_index(r)
     @grid[i..i+8]
   end
 
@@ -30,10 +31,14 @@ class SudokuTools::Grid
     column
   end
 
+  def box(b)
+    box_indicies(b).map{|i|@grid[i]}.join('')
+  end
+
   def prune_candidates
-    prune_candidates_from_rows
-    #prune_candidates_from_columns
-    #prune_candidates_from_boxes
+    prune_rows
+    prune_columns
+    prune_boxes
   end
 
   def prune_row(row)
@@ -44,14 +49,8 @@ class SudokuTools::Grid
     end
   end
 
-  def prune_candidates_from_rows
+  def prune_rows
     (0..8).each {|row| prune_row(row) }
-    #@grid.split("").each_with_index do |char, index|
-    #  if char != "0"
-    #    ap coordinate = index_to_coordinate(index)
-    #    prune_row(coordinate[:row])
-    #  end
-    #end
   end
 
   def prune_column(column)
@@ -60,41 +59,37 @@ class SudokuTools::Grid
       index = coordinate_to_index(row, column)
       digit = @grid[index]
       if digit == '0'
-        ap digits
-        digits.each {|d|
-          ap d
-          @candidates[index] = @candidates[index].tr(d, '') }
+        digits.each {|d| @candidates[index] = @candidates[index].tr(d, '') }
       end
     }
-    #(0..8).each {|row|
-    #  ap index = coordinate_to_index(row, column)
-    #  ap digit = @grid[index]
-    #  if digit == '0'
-    #    ap @candidates[index]
-    #    @candidates[index] = @candidates[index].tr(digit, '')
-    #    ap @candidates[index]
-    #  end
-    #}
   end
 
-  def prune_candidates_from_columns
+  def prune_columns
+    (0..8).each {|column| prune_column(column) }
   end
 
-  #def prune_candidates_from_boxes
-  #end
+  def prune_box(box)
+    digits = box(box).tr('0','').split('')
+    box_indicies(box).each{ |index|
+      digit = @grid[index]
+      if digit == '0'
+        digits.each {|d| @candidates[index] = @candidates[index].tr(d, '') }
+      end
+    }
+  end
 
-  def prune_candidates_where_digit
+  def prune_boxes
+    (0..8).each {|box| prune_box(box) }
+  end
+
+  def prune_digits
     @grid.split("").each_with_index do |char, index|
       @candidates[index] = "" if char != "0"
     end
   end
 
-  private
-
   def initialize_candidates
-    path = 'spec/fixtures/candidates.json'
-    @candidates = JSON.parse(File.open(path).read)
-    prune_candidates_where_digit
-    #prune_candidates_from_rows
+    prune_digits
+    prune_candidates
   end
 end
