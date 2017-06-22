@@ -5,19 +5,25 @@ describe SudokuTools::Grid do
     @grid = SudokuTools::Grid.new(easy_grid)
   end
 
+  it 'should prune a row' do
+    @grid.prune_row(0)
+    expect(@grid.candidates.first).to eq ("24568")
+  end
+
+  it 'should prune all rows' do
+    @grid.prune_candidates_from_rows
+    ap @grid.candidates
+  end
+
+  it 'should prune a column' do
+    index = coordinate_to_index(0,0)
+    @grid.prune_column(index)
+    expect(@grid.candidates.first).to eq ("67")
+  end
+
   it 'has pruned candidates' do
     @grid.prune_candidates_where_digit
     expect(@grid.candidates).to eq easy_grid_candidates_pruned_by_digit
-    #expect(@grid.candidates).to eq easy_grid_candidates
-  end
-
-  it 'should prune a row' do
-    ap @grid.serialized
-    ap @grid.candidates.first(9)
-    @grid.prune_row(0)
-    ap @grid.candidates.first(9)
-    #ap @grid.candidates.first.tr('1', '')
-    #ap @grid.candidates.first
-    #expect(@grid.candidates.first[0]).to eq ("12345678")
+    expect(@grid.candidates).to eq easy_grid_candidates
   end
 end

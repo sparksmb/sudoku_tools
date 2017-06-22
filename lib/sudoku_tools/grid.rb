@@ -24,23 +24,30 @@ class SudokuTools::Grid
 
   def prune_row(row)
     ri = row_to_index(row)
-    offset = ri + 9
+    offset = ri + 8
     @grid[ri..offset].tr('0','').split("").each do |digit|
       (ri..offset).each { |c| @candidates[c] = @candidates[c].tr(digit, '') }
     end
   end
 
   def prune_candidates_from_rows
-    @grid.split("").each_with_index do |char, index|
-      if char != "0"
-        coordinate = coordinate_to_index(index)
-        prune_row(coordinate[:row], char)
-      end
-    end
+    (0..8).each {|row| prune_row(row) }
+    #@grid.split("").each_with_index do |char, index|
+    #  if char != "0"
+    #    ap coordinate = index_to_coordinate(index)
+    #    prune_row(coordinate[:row])
+    #  end
+    #end
   end
 
-  #def prune_candidates_from_columns
-  #end
+  def prune_column(column)
+    (0..8).each {|row|
+
+    }
+  end
+
+  def prune_candidates_from_columns
+  end
 
   #def prune_candidates_from_boxes
   #end
@@ -57,5 +64,6 @@ class SudokuTools::Grid
     path = 'spec/fixtures/candidates.json'
     @candidates = JSON.parse(File.open(path).read)
     prune_candidates_where_digit
+    #prune_candidates_from_rows
   end
 end
