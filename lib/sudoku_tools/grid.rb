@@ -16,6 +16,20 @@ class SudokuTools::Grid
     @candidates
   end
 
+  def row(n)
+    i = row_to_index(n)
+    @grid[i..i+8]
+  end
+
+  def column(c)
+    column = ""
+    (0..8).each {|r|
+      index = coordinate_to_index(r,c)
+      column << @grid[index]
+    }
+    column
+  end
+
   def prune_candidates
     prune_candidates_from_rows
     #prune_candidates_from_columns
@@ -41,9 +55,26 @@ class SudokuTools::Grid
   end
 
   def prune_column(column)
+    digits = column(column).tr('0','').split('')
     (0..8).each {|row|
-
+      index = coordinate_to_index(row, column)
+      digit = @grid[index]
+      if digit == '0'
+        ap digits
+        digits.each {|d|
+          ap d
+          @candidates[index] = @candidates[index].tr(d, '') }
+      end
     }
+    #(0..8).each {|row|
+    #  ap index = coordinate_to_index(row, column)
+    #  ap digit = @grid[index]
+    #  if digit == '0'
+    #    ap @candidates[index]
+    #    @candidates[index] = @candidates[index].tr(digit, '')
+    #    ap @candidates[index]
+    #  end
+    #}
   end
 
   def prune_candidates_from_columns
