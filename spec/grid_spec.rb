@@ -54,8 +54,25 @@ describe SudokuTools::Grid do
     [1,9,11,19].each {|ci| expect(@grid.candidates[ci]).to eq "" }
   end
 
-  it 'should prune candidates' do
+  it 'should prune easy grid candidates' do
     @grid.initialize_candidates
     expect(@grid.candidates).to eq easy_grid_candidates
+  end
+
+  it 'should prune simple grid candidates' do
+    grid = SudokuTools::Grid.new(simple_grid)
+    grid.initialize_candidates
+    expect(grid.candidates).to eq simple_grid_candidates
+  end
+
+  it 'should get a cell' do
+    expect(@grid.cell(1)).to eq "9"
+    expect(@grid.cell(79)).to eq "2"
+  end
+
+  it 'should set a cell' do
+    expect(@grid.serialized[0]).to eq '0'
+    @grid.cell(0, '1')
+    expect(@grid.serialized[0]).to eq '1'
   end
 end

@@ -1,5 +1,3 @@
-require_relative 'grid_index_coordinate_conversion'
-
 class SudokuTools::Grid
   include SudokuTools::GridIndexCoordinateConversion
 
@@ -91,5 +89,13 @@ class SudokuTools::Grid
   def initialize_candidates
     prune_digits
     prune_candidates
+  end
+
+  def cell(index, digit=nil)
+    if digit.nil?
+      @grid[index]
+    else
+      @grid[index] = digit
+    end
   end
 end

@@ -1,7 +1,8 @@
 require 'spec_helper'
-include SudokuTools::GridIndexCoordinateConversion
 
 describe SudokuTools::GridIndexCoordinateConversion do
+  include SudokuTools::GridIndexCoordinateConversion
+
   it 'converts grid index to row' do
     expect(index_to_row(0)).to eq 0
     expect(index_to_row(39)).to eq 4
