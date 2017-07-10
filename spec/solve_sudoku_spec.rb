@@ -22,7 +22,9 @@ describe SudokuTools::SolveSudoku do
   it 'should solve moderate grid' do
     grid = SudokuTools::Grid.new(moderate_grid)
     solver = SudokuTools::SolveSudoku.new(grid)
-    grid = solver.execute.serialized
-    expect(grid).to eq moderate_grid_solved
+    grid = solver.execute
+    pr = SudokuTools::PrintGrid.new(grid)
+    puts pr.execute
+    puts pr.execute(:candidates)
   end
 end

@@ -3,16 +3,23 @@ class SudokuTools::Grid
 
   def initialize(serialized_grid)
     @grid = serialized_grid
-    path = 'spec/fixtures/candidates.json'
-    @candidates = JSON.parse(File.open(path).read)
+    @candidates = fill_in_all_candidates
   end
 
-  def serialized
-    @grid
+  def serialized(grid=nil)
+    if grid.nil?
+      @grid
+    else
+      @grid = grid
+    end
   end
 
-  def candidates
-    @candidates
+  def candidates(candidates=nil)
+    if candidates.nil?
+      @candidates
+    else
+      @candidates = candidates
+    end
   end
 
   def row(r)
@@ -97,5 +104,10 @@ class SudokuTools::Grid
     else
       @grid[index] = digit
     end
+  end
+
+  def fill_in_all_candidates
+    path = 'spec/fixtures/candidates.json'
+    JSON.parse(File.open(path).read)
   end
 end

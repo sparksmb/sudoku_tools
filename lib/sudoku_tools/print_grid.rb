@@ -3,7 +3,10 @@ class SudokuTools::PrintGrid
     @grid = grid
   end
 
-  def execute
+  def execute(options=nil)
+    if options and options == :candidates
+      return print_candidates
+    end
     print_loop(@grid.serialized)
   end
 
@@ -33,6 +36,23 @@ class SudokuTools::PrintGrid
         format += "\n" if column == 8
       end
       format += "---+---+---\n" if row == 2 or row == 5
+    end
+    format
+  end
+
+  def print_candidates
+    format = ""
+    (0..8).each do |row|
+      (0..8).each do |column|
+        index = (9 * row) + column
+        candidates = @grid.candidates[index]
+        cell = candidates.rjust(9, ' ')
+        cell = "_".rjust(9, ' ') if candidates == ''
+        format += "#{cell} "
+        format += "|" if column == 2 or column == 5
+        format += "\n" if column == 8
+      end
+      format += "------------------------------+------------------------------+------------------------------\n" if row == 2 or row == 5
     end
     format
   end

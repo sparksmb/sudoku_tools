@@ -23,12 +23,12 @@ describe SudokuTools::SolveNakedSingles do
     grid = @tactic.execute
     expect(grid.serialized[0]).to eq '6'
     expect(grid.serialized[7]).to eq '8'
-    expect(@grid.serialized[12]).to eq '3'
-    expect(@grid.serialized[20]).to eq '5'
-    expect(@grid.serialized[28]).to eq '4'
-    expect(@grid.serialized[68]).to eq '8'
-    expect(@grid.serialized[73]).to eq '1'
-    expect(@grid.serialized[80]).to eq '5'
+    expect(grid.serialized[12]).to eq '3'
+    expect(grid.serialized[20]).to eq '5'
+    expect(grid.serialized[28]).to eq '4'
+    expect(grid.serialized[68]).to eq '8'
+    expect(grid.serialized[73]).to eq '1'
+    expect(grid.serialized[80]).to eq '5'
   end
 end
 

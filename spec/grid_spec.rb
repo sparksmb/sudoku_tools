@@ -75,4 +75,15 @@ describe SudokuTools::Grid do
     @grid.cell(0, '1')
     expect(@grid.serialized[0]).to eq '1'
   end
+
+  it 'should set internal state serialized value' do
+    @grid.serialized("1234")
+    expect(@grid.serialized).to eq "1234"
+  end
+
+  it 'should set internal state candidates value' do
+    expect(@grid.candidates.count).to eq 81
+    @grid.candidates([])
+    expect(@grid.candidates).to eq []
+  end
 end
