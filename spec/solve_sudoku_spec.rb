@@ -26,5 +26,6 @@ describe SudokuTools::SolveSudoku do
     pr = SudokuTools::PrintGrid.new(grid)
     puts pr.execute
     puts pr.execute(:candidates)
+    expect(grid.serialized).to eq moderate_grid_solved
   end
 end

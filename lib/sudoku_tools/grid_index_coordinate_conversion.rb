@@ -51,6 +51,14 @@ module SudokuTools::GridIndexCoordinateConversion
     indicies[box_number]
   end
 
+  def column_indicies(column)
+    indices = []
+    (0..8).each {|row|
+      indices << row * 9 + column
+    }
+    indices
+  end
+
   def row_to_index(row)
     row * 9
   end

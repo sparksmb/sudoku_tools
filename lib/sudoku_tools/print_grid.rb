@@ -31,7 +31,11 @@ class SudokuTools::PrintGrid
     (0..8).each do |row|
       (0..8).each do |column|
         index = (9 * row) + column
-        format += g[index]
+        if g[index] == "0"
+          format += " "
+        else
+          format += g[index]
+        end
         format += "|" if column == 2 or column == 5
         format += "\n" if column == 8
       end

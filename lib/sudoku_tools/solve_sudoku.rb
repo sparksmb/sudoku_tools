@@ -12,13 +12,19 @@ class SudokuTools::SolveSudoku
   end
 
   def run_tactics
-    @run_count += 1
+    ap @run_count += 1
+    tactics = [
+      SudokuTools::SolveNakedSingles.new(@grid),
+      SudokuTools::SolveHiddenSingles.new(@grid)
+    ]
 
-    tactic = SudokuTools::SolveNakedSingles.new(@grid)
-    @grid = tactic.execute
-    @grid.prune_candidates
+    tactics.each {|tactic|
+      @grid = tactic.execute
+      @grid.prune_candidates
+      @failed |= tactic.failed?
+    }
 
-    @failed |= tactic.failed?
+    @failed
   end
 
   def solved?
